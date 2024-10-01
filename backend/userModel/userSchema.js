@@ -26,11 +26,5 @@ const userSchema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-// Add a method to the User schema to generate a JWT
-// userSchema.methods.generateToken = function() {
-//     const secretKey = process.env.SECRET_KEY; // Use environment variable in production
-//     return jwt.sign({ id: this._id }, secretKey, { expiresIn: '30d' });
-// };
-
 const User = mongoose.model("User", userSchema);
 export default User;

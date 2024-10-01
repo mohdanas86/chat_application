@@ -4,11 +4,7 @@ import { MdSend } from "react-icons/md";
 import { useAuthcontext } from "../../context/auth.context";
 
 const MessageInput = () => {
-  const {
-    selectedConversation,
-    currentId,
-    fetchMessages,
-  } = useAuthcontext();
+  const { currentId, fetchMessages } = useAuthcontext();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
@@ -14,7 +15,8 @@ export const AuthProvider = ({ children }) => {
   const [userConversation, setUserConversation] = useState("");
   const [currentUserMessages, setCurrentUserMessages] = useState("");
   const [currentId, setCurrentId] = useState("");
-  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState("null");
+  const [noMessage, setNoMessage] = useState("");
 
   // Initialized authUser from localStorage or default to null
   const [authUser, setAuthUser] = useState(
@@ -64,11 +66,20 @@ export const AuthProvider = ({ children }) => {
       if (currentId) {
         const url = `http://localhost:4000/api/message/${currentId}`;
         const response = await axios.get(url, { withCredentials: true });
+        if (response) {
+          setNoMessage("");
+        }
         console.log("All messages:", response.data.conversation);
         setCurrentUserMessages(response.data.conversation);
       }
     } catch (err) {
-      console.error("Error fetching messages:", err);
+      //   console.error("Error fetching messages:", err.response.data.message);
+      // toast.error(err.response.data.message);
+      toast(err.response.data.message, {
+        duration: 2000,
+      });
+      setNoMessage(err.response.data.message);
+      setCurrentUserMessages([]);
     }
   };
 
@@ -117,7 +128,9 @@ export const AuthProvider = ({ children }) => {
         fetchMessages,
         currentId,
         setCurrentId,
-        fetchConversation
+        fetchConversation,
+        noMessage,
+        setNoMessage,
       }}
     >
       {children}

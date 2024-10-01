@@ -6,6 +6,7 @@ const Conversation = () => {
     userConversation,
     selectedConversation,
     setSelectedConversation,
+    currentId,
     setCurrentId,
   } = useAuthcontext();
 
@@ -24,13 +25,18 @@ const Conversation = () => {
 
           return (
             <div
-              className={`peopleChatItem w-full flex justify-around items-center px-4 py-3 gap-3 cursor-pointer border-b-[2px] duration-300 ${isSelected ? "bg-blue-100 border-b-0" : ""}`}
+              className={`peopleChatItem w-full flex justify-around items-center px-4 py-3 gap-3 cursor-pointer border-b-[2px] duration-300 ${
+                isSelected ? "bg-blue-100 border-b-0" : ""
+              }`}
               key={conversation._id}
               onClick={() => handleCurrentUser(conversation)}
             >
               <div className="profileIcon avatar online w-[15%]">
                 <div className="rounded-full">
-                  <img src={conversation.profilepic} alt={conversation.fullname || "Profile"} />
+                  <img
+                    src={conversation.profilepic}
+                    alt={conversation.fullname || "Profile"}
+                  />
                 </div>
               </div>
               <div className="peopleChatDetails w-full flex flex-col justify-center items-start">

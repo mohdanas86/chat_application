@@ -15,7 +15,6 @@ const SidebarMenu = () => {
   return (
     <div className="sidemenu hidden lg:block bg-white shadow-lg shadow-[#cfdbf7] rounded-xl px-4 py-4">
       <div className="sideMenuBox h-full w-full mx-auto flex flex-col justify-between items-center">
-
         {/* PROFILE IMAGE */}
         <div className="profileIcon avatar online w-[80%] mx-auto">
           <div className="rounded-full">

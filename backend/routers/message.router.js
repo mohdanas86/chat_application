@@ -5,7 +5,10 @@ import MessageModel from '../userModel/message.model.js'; // Corrected import pa
 
 const messageRouter = express.Router();
 
+// POST message
 messageRouter.post('/send/:id', protectRouter, postMessage);
+
+// GET messages
 messageRouter.get('/:id', protectRouter, getMessage);
 
 async function postMessage(req, res) {
@@ -21,13 +24,14 @@ async function postMessage(req, res) {
             });
         }
 
-        // Find or create a conversation
+        // Find or create a conversation between sender and receiver
         let conversation = await ConversationModel.findOne({
             participants: {
                 "$all": [senderId, receiverId]
             }
         });
 
+        // If conversation doesn't exist, create it
         if (!conversation) {
             conversation = await ConversationModel.create({
                 participants: [senderId, receiverId],
@@ -45,7 +49,7 @@ async function postMessage(req, res) {
         // Save the new message
         await newMessage.save();
 
-        // Update the conversation with the new message ID
+        // Update the conversation with the new message
         conversation.messages.push(newMessage._id);
         await conversation.save();
 
@@ -55,73 +59,46 @@ async function postMessage(req, res) {
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("Error in postMessage:", err);
         return res.status(500).json({
-            error: err.message || 'An error occurred'
+            error: err.message || 'An error occurred while sending the message'
         });
     }
 }
 
-// async function getMessage(req, res) {
-//     try {
-//         const userChatId = req.params.id;
-//         const senderId = req.user._id;
-
-//         console.log(userChatId)
-//         console.log(senderId)
-//         const converstion = await ConversationModel.findOne({
-//             participants: { "$all": [senderId, userChatId] }
-//         }).populate("messages")
-
-//         if (converstion) {
-//             res.status(200).json({
-//                 message: "No Conversation",
-//             })
-//         } else {
-//             res.status(200).json({
-//                 message: "data",
-//                 converstion: converstion.messages
-//             })
-//         }
-
-//     } catch (err) {
-//         console.error(err);
-//         return res.status(500).json({
-//             message: "get user message error",
-//             error: err.message || 'An error occurred'
-//         });
-//     }
-// }
 async function getMessage(req, res) {
     try {
         const userChatId = req.params.id;
         const senderId = req.user._id;
 
-        console.log(userChatId);
-        console.log(senderId);
+        console.log("userChatId:", userChatId);
+        console.log("senderId:", senderId);
 
+        // Find the conversation between the sender and receiver
         const conversation = await ConversationModel.findOne({
             participants: { "$all": [senderId, userChatId] }
         }).populate("messages");
 
-        // if (conversation) { // Check if the conversation does not exist
-        //     return res.status(404).json({
-        //         message: "No Conversation found",
-        //     });
-        // } 
-        
+        // If no conversation is found, return a 404 error
+        if (!conversation) {
+            return res.status(404).json({
+                message: "No conversation found between the users."
+            });
+        }
+
+        // Return the messages from the conversation
         return res.status(200).json({
             message: "Conversation retrieved successfully",
-            conversation: conversation.messages // Return messages here
+            conversation: conversation.messages // Return the messages array
         });
 
     } catch (err) {
-        console.error(err);
+        console.error("Error in getMessage:", err);
         return res.status(500).json({
             message: "An error occurred while retrieving the conversation",
+            error: err.message || 'An error occurred'
         });
     }
 }
-
 
 export default messageRouter;
