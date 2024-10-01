@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useAuthcontext } from "../context/auth.context";
 
 const Register = () => {
-  const { authUser, setAuthUser } = useAuthcontext();
+  const { setAuthUser } = useAuthcontext();
 
   const [input, setInput] = useState({
     fullname: "",
@@ -36,15 +36,14 @@ const Register = () => {
       const url = "http://localhost:4000/api/auth/signup";
       const response = await axios.post(url, input);
 
-      // Assuming you want to store some part of the response in localStorage
-      // localStorage.setItem("userdata", JSON.stringify(response.data.userdata));
       setAuthUser(response.data.userdata);
-      console.log(response.data.userdata);
-        // token set
-        // localStorage.setItem("token", response.data)
+      // console.log(response.data.userdata);
+      // console.log("token", response.data.token);
+
+      // token set
+      localStorage.setItem("token", response.data.token);
     } catch (err) {
       // Handle errors and display a user-friendly message
-      //  const errorMessage = err.response.data.message;
       toast.error(err);
       console.log(err);
     }

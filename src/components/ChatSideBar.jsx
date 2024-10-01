@@ -5,15 +5,7 @@ import { useAuthcontext } from "../context/auth.context";
 import ChatNav from "./ChatNav";
 
 const ChatSideBar = () => {
-  const {
-    logout,
-    togalMenu,
-    setTogalMenu,
-    conversation,
-    setConversation,
-    search,
-    setSearch,
-  } = useAuthcontext();
+  const { conversation } = useAuthcontext();
   return (
     <>
       <div

@@ -39,13 +39,14 @@ async function signUp(req, res) {
             profilepic: gender === "male" ? boyPic : girlPic
         })
 
-        genrateJwtToken(newUser._id, res) // genrate token
+        const token = genrateJwtToken(newUser._id, res) // genrate token
 
         await newUser.save();
 
         return res.status(200).json({
             message: "new User Added",
             userdata: newUser,
+            token : token
         })
 
     } catch (err) {
@@ -56,36 +57,6 @@ async function signUp(req, res) {
 }
 
 // LOGIN FUNCTION
-// async function login(req, res) {
-//     try {
-//         const { username, password } = req.body;
-//         const user = await User.findOne({ username });
-//         const pass = bcrypt.compare(password, user?.password || "");
-//         console.log(jwt.sign(user, anasChatApplicationSecretKey, { expiresIn: '30d' }))
-
-//         if (!password || !pass) {
-//             return res.json.status(400).json({
-//                 message: "invalid username and password"
-//             })
-//         }
-
-
-//       //  const token = jwt.sign(user, anasChatApplicationSecretKey, { expiresIn: '30d' });
-//     //  const token = jwt.sign({ id: user._id }, anasChatApplicationSecretKey, { expiresIn: '30d' });
-//       return res.status(200).json({
-//         message: "Login successfully",
-//         user: user,
-//      //   token: token
-//     });
-
-//     } catch (err) {
-//        return res.status(401).json({
-//             message: "login failed try with correct information",
-//             error: err
-//         })
-//     }
-// }
-
 async function login(req, res) {
     try {
         const { username, password } = req.body;

@@ -3,25 +3,39 @@ import React, { useEffect, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useAuthcontext } from "../context/auth.context";
 
-const ChatNav = ({selectedConversation}) => {
-  const { logout, setTogalMenu, authUser, setConversation } =
-    useAuthcontext();
+const ChatNav = ({ selectedConversation }) => {
+  const { logout, setTogalMenu, setConversation } = useAuthcontext();
 
   return (
     <div>
-      <div className={`chatNav justify-between items-center border-b-2 pb-4 lg:px-0 px-4 duration-300 ${!selectedConversation ? " hidden" : "flex"}`}>
-       {selectedConversation ? ( <div className="flex justify-start items-center gap-2 lg:gap-4">
-          {/* PROFILE IMAGE */}
-          <div className="profileIcon avatar online w-[10%] lg:w-[30px]">
-            <div className="rounded-full">
-              <img src={selectedConversation?selectedConversation.profilepic:"pic"} alt="profile image" />
+      <div
+        className={`chatNav justify-between items-center border-b-2 pb-4 lg:px-0 px-4 duration-300 ${
+          !selectedConversation ? " hidden" : "flex"
+        }`}
+      >
+        {selectedConversation ? (
+          <div className="flex justify-start items-center gap-2 lg:gap-4">
+            {/* PROFILE IMAGE */}
+            <div className="profileIcon avatar online w-[10%] lg:w-[30px]">
+              <div className="rounded-full">
+                <img
+                  src={
+                    selectedConversation
+                      ? selectedConversation.profilepic
+                      : "pic"
+                  }
+                  alt="profile image"
+                />
+              </div>
             </div>
-          </div>
 
-          <span className="font-semibold text-slate-700 text-sm pl-2 capitalize">
-            {selectedConversation?selectedConversation.fullname:"name"}
-          </span>
-        </div>) : ("")}
+            <span className="font-semibold text-slate-700 text-sm pl-2 capitalize">
+              {selectedConversation ? selectedConversation.fullname : "name"}
+            </span>
+          </div>
+        ) : (
+          ""
+        )}
 
         {/* MENU ICON */}
         <div

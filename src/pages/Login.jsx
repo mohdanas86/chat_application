@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { useAuthcontext } from "../context/auth.context";
 
 const Login = () => {
-  const { authUser, setAuthUser } = useAuthcontext();
+  const { setAuthUser } = useAuthcontext();
 
   const [input, setInput] = useState({
     username: "",
@@ -26,7 +26,7 @@ const Login = () => {
       toast.success(response.data.message);
       setAuthUser(response.data.user);
       // token set
-      localStorage.setItem("token", response.data.token)
+      localStorage.setItem("token", response.data.token);
       // console.log("token", response.data.token)
     } catch (err) {
       console.log("error: ", err.response.data.message);
