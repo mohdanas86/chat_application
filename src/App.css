@@ -1,0 +1,98 @@
+/* Flex container */
+.container {
+  display: flex;
+  height: 100vh;
+  width: 60vw;
+  margin: 0 auto;
+}
+
+/* Flex items */
+.sidemenu {
+  flex: 0 0 6%;
+}
+.sidebar {
+  flex: 0 0 30%;
+}
+
+.chatBox {
+  flex: 1;
+}
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+.messageCon::-webkit-scrollbar,
+.peopleChatItems::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Optional: Hide scrollbar for Firefox */
+.messageCon,
+.peopleChatItems {
+  scrollbar-width: none;
+}
+
+/* Mobile styles (default) */
+@media only screen and (max-width: 767px) {
+  .container {
+    width: 100vw;
+    flex-direction: column;
+  }
+
+  .sidemenu,
+  .sidebar,
+  .chatBox {
+    flex: 1 0 auto;
+  }
+
+  .conversationScrollCon {
+    height: 40rem;
+  }
+}
+
+/* Tablet styles */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    width: 60vw;
+    flex-direction: row;
+  }
+
+  .sidemenu {
+    flex: 0 0 6%;
+  }
+
+  .sidebar {
+    flex: 0 0 30%;
+  }
+
+  .chatBox {
+    flex: 1;
+  }
+
+  .conversationScrollCon {
+    height: 20rem;
+  }
+}
+
+/* Desktop styles */
+@media only screen and (min-width: 1024px) {
+  .container {
+    width: 60vw;
+    flex-direction: row; 
+  }
+
+  .sidemenu {
+    flex: 0 0 6%;
+  }
+
+  .sidebar {
+    flex: 0 0 30%; 
+  }
+
+  .chatBox {
+    flex: 1; 
+  }
+
+  .conversationScrollCon {
+    height: 33rem;
+  }
+}
