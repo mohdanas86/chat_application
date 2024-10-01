@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useAuthcontext } from "../context/auth.context";
 
 const Conversation = () => {
@@ -6,46 +6,36 @@ const Conversation = () => {
     userConversation,
     selectedConversation,
     setSelectedConversation,
-    fetchMessages,
-    currentId,
     setCurrentId,
   } = useAuthcontext();
 
   const handleCurrentUser = (conversation) => {
-    setSelectedConversation(conversation);
-    setCurrentId(conversation._id);
-    fetchMessages();
+    if (selectedConversation?._id !== conversation._id) {
+      setCurrentId(conversation._id);
+      setSelectedConversation(conversation);
+    }
   };
-
 
   return (
     <>
       {userConversation && userConversation.length > 0 ? (
-        userConversation.map((v, i) => {
-          const isSelected = selectedConversation?._id === v._id; // Check if the current conversation is selected
+        userConversation.map((conversation) => {
+          const isSelected = selectedConversation?._id === conversation._id;
 
           return (
             <div
-              className={`peopleChatItem w-full flex justify-around items-center px-4 py-3 gap-3 cursor-pointer border-b-[2px] duration-300 ${
-                isSelected ? "bg-blue-100 border-b-0" : ""
-              }`}
-              key={i}
-              onClick={() => handleCurrentUser(v)} // Pass the conversation object
+              className={`peopleChatItem w-full flex justify-around items-center px-4 py-3 gap-3 cursor-pointer border-b-[2px] duration-300 ${isSelected ? "bg-blue-100 border-b-0" : ""}`}
+              key={conversation._id}
+              onClick={() => handleCurrentUser(conversation)}
             >
-              {/* PROFILE IMAGE */}
               <div className="profileIcon avatar online w-[15%]">
                 <div className="rounded-full">
-                  <img
-                    src={v.profilepic}
-                    alt={v.fullname || "Profile"} // Added alt text for accessibility
-                  />
+                  <img src={conversation.profilepic} alt={conversation.fullname || "Profile"} />
                 </div>
               </div>
-
-              {/* PEOPLE CHAT DETAILS */}
               <div className="peopleChatDetails w-full flex flex-col justify-center items-start">
                 <h4 className="font-semibold text-slate-800 text-sm capitalize">
-                  {v.fullname}
+                  {conversation.fullname}
                 </h4>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+
 export const AuthContext = createContext();
 
 export const useAuthcontext = () => {
@@ -14,82 +15,86 @@ export const AuthProvider = ({ children }) => {
   const [currentUserMessages, setCurrentUserMessages] = useState("");
   const [currentId, setCurrentId] = useState("");
   const [selectedConversation, setSelectedConversation] = useState(null);
+
   // Initialized authUser from localStorage or default to null
   const [authUser, setAuthUser] = useState(
     JSON.parse(localStorage.getItem("chat-user")) || null
   );
 
-  // selected
-  let isSelected;
-
-  const fetchConversation = async (req, res) => {
+  // Fetch user conversations
+  const fetchConversation = async () => {
     try {
-      const url = "http://localhost:4000/api/users";
       if (localStorage.getItem("chat-user")) {
-        const response = await axios(url, {
-          method: "GET",
-          withCredentials: true, // Important to include cookies
-        });
-        console.log(response.data);
+        const url = "http://localhost:4000/api/users";
+        const response = await axios.get(url, { withCredentials: true });
+        console.log("User Conversations:", response.data);
         setUserConversation(response.data);
       }
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching conversations:", err);
     }
   };
 
-  // remove cookies
-  function deleteCookie(name) {
+  // Remove a cookie by name
+  const deleteCookie = (name) => {
     document.cookie = `${name}=; Max-Age=0; path=/;`;
-  }
+  };
 
-  // set cookies
+  // Set JWT token in cookies
   const setTokenCookies = () => {
     const token = localStorage.getItem("token");
-    document.cookie = `JWT=${token}; path=/; max-age=3600`;
-  };
-
-  // logout
-  const logout = () => {
-    setAuthUser(null); // authUser to null or an appropriate value to signify logout
-    localStorage.removeItem("chat-user"); // Remove the user data from localStorage
-    localStorage.removeItem("token"); // Remove the user data from localStorage
-    deleteCookie("JWT");
-  };
-
-  // fetch current user message
-  const fetchMessages = async () => {
-    try {
-      // const url = `http://localhost:4000/api/message/66e9260d2fff780b9d541d96`;
-      // const url = `http://localhost:4000/api/message/${selectedConversation._id}`;
-      const url = `http://localhost:4000/api/message/${currentId}`;
-      console.log(url);
-      if(currentId){
-        const response = await axios.get(url, { withCredentials: true });
-      console.log("all messages", response.data.conversation);
-      setCurrentUserMessages(response.data.conversation);
-      }
-    } catch (err) {
-      console.log(err);
+    if (token) {
+      document.cookie = `JWT=${token}; path=/; max-age=3600`;
+    } else {
+      deleteCookie("JWT");
     }
   };
 
+  // Logout function
+  const logout = () => {
+    setAuthUser(null); // Set authUser to null to signify logout
+    localStorage.removeItem("chat-user"); // Remove user data from localStorage
+    localStorage.removeItem("token"); // Remove token from localStorage
+    deleteCookie("JWT"); // Delete the JWT cookie
+  };
+
+  // Fetch current user messages
+  const fetchMessages = async () => {
+    try {
+      if (currentId) {
+        const url = `http://localhost:4000/api/message/${currentId}`;
+        const response = await axios.get(url, { withCredentials: true });
+        console.log("All messages:", response.data.conversation);
+        setCurrentUserMessages(response.data.conversation);
+      }
+    } catch (err) {
+      console.error("Error fetching messages:", err);
+    }
+  };
+
+  // Handle token and fetch conversation on mount or when authUser changes
   useEffect(() => {
+    if (authUser) {
+      setTokenCookies(); // Set the token cookie if authUser is available
+    }
+    fetchConversation(); // Fetch conversations on component mount
+  }, [authUser]);
 
-      fetchMessages();
+  // Fetch messages whenever the currentId changes
+  useEffect(() => {
+    fetchMessages(); // Fetch user messages when currentId changes
+  }, [currentId]);
 
-    
-    fetchConversation();
-    setTokenCookies();
-    // Update localStorage whenever authUser changes
+  // Handle authUser changes to update localStorage
+  useEffect(() => {
     if (authUser) {
       localStorage.setItem("chat-user", JSON.stringify(authUser));
     } else {
       localStorage.removeItem("chat-user");
-      localStorage.removeItem("userdata");
+      localStorage.removeItem("token");
       deleteCookie("JWT");
     }
-  }, [authUser,currentId, selectedConversation]);
+  }, [authUser]);
 
   return (
     <AuthContext.Provider
@@ -112,6 +117,7 @@ export const AuthProvider = ({ children }) => {
         fetchMessages,
         currentId,
         setCurrentId,
+        fetchConversation
       }}
     >
       {children}

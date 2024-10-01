@@ -1,46 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 import { MdSend } from "react-icons/md";
 import { useAuthcontext } from "../../context/auth.context";
 
 const MessageInput = () => {
   const {
     selectedConversation,
-    setSelectedConversation,
-    authUser,
     currentId,
-    setCurrentId,
-    fetchMessages
+    fetchMessages,
   } = useAuthcontext();
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!message.trim()) {
+      setError("Message cannot be empty.");
+      return;
+    }
+
+    if (!currentId) {
+      setError("No conversation selected.");
+      return;
+    }
+
     try {
-      // const url = `http://localhost:4000/api/message/66e9260d2fff780b9d541d96`;
-      // const url = `http://localhost:4000/api/message/send/${selectedConversation._id}`;
       const url = `http://localhost:4000/api/message/send/${currentId}`;
-      console.log(url);
-      const response = await axios.post(
-        url,
-        { message },
-        { withCredentials: true }
-      );
-      if (response) {
-        setMessage(""); // Clear the message input after sending
-        fetchMessages(); // Fetch messages after sending
-      }
-      console.log(response);
+      await axios.post(url, { message }, { withCredentials: true });
+
+      setMessage(""); // Clear the message input
+      fetchMessages(); // Fetch messages after sending
+      setSuccess(true); // Indicate message sent successfully
+      setError(""); // Clear any previous error
     } catch (err) {
-      console.log(err);
+      console.error("Error sending message:", err);
+      setError("Failed to send message. Please try again.");
+      setSuccess(false);
     }
   };
+
+  useEffect(() => {
+    // Reset success message after 2 seconds
+    if (success) {
+      const timer = setTimeout(() => {
+        setSuccess(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
   return (
     <div className="messageInputCon w-full bg-white absolute bottom-2 left-0">
       <div className="messageInputBox flex justify-center items-center flex-col gap-4 text-black rounded-xl py-2 w-[95%] mx-auto">
-        {/* SEARCHBAR */}
-        <form className="seachBar w-full" onSubmit={handleSubmit}>
+        {/* MESSAGE INPUT */}
+        <form className="searchBar w-full" onSubmit={handleSubmit}>
           <label className="input input-bordered flex items-center gap-2 bg-[#EFF6FC] outline-none border-0">
             <input
               type="text"

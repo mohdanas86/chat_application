@@ -27,6 +27,7 @@ const Login = () => {
       setAuthUser(response.data.user);
       // token set
       localStorage.setItem("token", response.data.token)
+      // console.log("token", response.data.token)
     } catch (err) {
       console.log("error: ", err.response.data.message);
       toast.error(err.response.data.message);

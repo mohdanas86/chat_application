@@ -40,6 +40,8 @@ const Register = () => {
       // localStorage.setItem("userdata", JSON.stringify(response.data.userdata));
       setAuthUser(response.data.userdata);
       console.log(response.data.userdata);
+        // token set
+        // localStorage.setItem("token", response.data)
     } catch (err) {
       // Handle errors and display a user-friendly message
       //  const errorMessage = err.response.data.message;
