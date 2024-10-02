@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [currentId, setCurrentId] = useState("");
   const [selectedConversation, setSelectedConversation] = useState("null");
   const [noMessage, setNoMessage] = useState("");
+  const [mobileChat, setMobileChat] = useState(false);
 
   // Initialized authUser from localStorage or default to null
   const [authUser, setAuthUser] = useState(
@@ -131,6 +132,8 @@ export const AuthProvider = ({ children }) => {
         fetchConversation,
         noMessage,
         setNoMessage,
+        mobileChat,
+        setMobileChat,
       }}
     >
       {children}

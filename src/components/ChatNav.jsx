@@ -4,7 +4,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { useAuthcontext } from "../context/auth.context";
 
 const ChatNav = ({ selectedConversation }) => {
-  const { logout, setTogalMenu, setConversation } = useAuthcontext();
+  const { logout, setTogalMenu, setConversation, mobileChat, setMobileChat } = useAuthcontext();
 
   return (
     <div>
@@ -55,7 +55,7 @@ const ChatNav = ({ selectedConversation }) => {
             className="dropdown-content menu bg-white rounded-lg z-[1] w-[10rem] py-4  border shadow-lg top-6 right-0"
           >
             <li>
-              <a onClick={(e) => setConversation((e) => !e)}>Home</a>
+              <a onClick={(e) => setMobileChat((e) => !e)}>Home</a>
             </li>
             <li className="lg:hidden" onClick={logout}>
               <a>Logout</a>
