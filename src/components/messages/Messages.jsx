@@ -65,7 +65,7 @@ const Messages = () => {
         })
       ) : (
         <div className="NoMessage w-full grid grid-cols-1">
-          <p className="font-semibold text-2xl text-slate-500 mx-auto">
+          <p className="text-center font-semibold text-2xl text-slate-500 mx-auto">
             {noMessage} Chat Now!
           </p>
           <div className="mx-auto text-4xl text-slate-500 mt-6">

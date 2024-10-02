@@ -6,13 +6,16 @@ const Conversation = () => {
     userConversation,
     selectedConversation,
     setSelectedConversation,
-    currentId,
     setCurrentId,
+    mobileChat,
+    setMobileChat,
   } = useAuthcontext();
 
   const handleCurrentUser = (conversation) => {
     if (selectedConversation?._id !== conversation._id) {
       setCurrentId(conversation._id);
+      setMobileChat(true);
+      // console.log(mobileChat);
       setSelectedConversation(conversation);
     }
   };
@@ -25,7 +28,7 @@ const Conversation = () => {
 
           return (
             <div
-              className={`peopleChatItem w-full flex justify-around items-center px-4 py-3 gap-3 cursor-pointer border-b-[2px] duration-300 ${
+              className={`peopleChatItem w-full flex justify-around items-center lg:px-4 px-0 py-3 gap-3 cursor-pointer border-b-[2px] duration-300 ${
                 isSelected ? "bg-blue-100 border-b-0" : ""
               }`}
               key={conversation._id}
