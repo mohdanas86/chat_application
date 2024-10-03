@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   const fetchConversation = async () => {
     try {
       if (localStorage.getItem("chat-user")) {
-        const url = "http://localhost:4000/api/users";
+        const url = "https://chatstom.onrender.com/api/users";
         const response = await axios.get(url, { withCredentials: true });
         console.log("User Conversations:", response.data);
         setUserConversation(response.data);
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }) => {
   const fetchMessages = async () => {
     try {
       if (currentId) {
-        const url = `http://localhost:4000/api/message/${currentId}`;
+        const url = `https://chatstom.onrender.com/api/message/${currentId}`;
         const response = await axios.get(url, { withCredentials: true });
         if (response) {
           setNoMessage("");

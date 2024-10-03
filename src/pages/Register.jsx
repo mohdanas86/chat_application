@@ -33,7 +33,7 @@ const Register = () => {
     }
 
     try {
-      const url = "http://localhost:4000/api/auth/signup";
+      const url = "https://chatstom.onrender.com/api/auth/signup";
       const response = await axios.post(url, input);
 
       setAuthUser(response.data.userdata);
