@@ -16,7 +16,7 @@ const protectRouter = async (req, res, next) => {
         }
 
         // Verify the token
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const decoded = jwt.verify(token, "anasChatApplicationSecretKey");
 
         // Check if decoding was successful and contains userId
         if (!decoded || !decoded.userId) {

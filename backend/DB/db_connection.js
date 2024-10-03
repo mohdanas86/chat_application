@@ -1,8 +1,10 @@
 import mongoose, { mongo } from "mongoose";
 
+const url = "mongodb+srv://anas:anas@food.t6wubmw.mongodb.net/chat?retryWrites=true&w=majority&appName=food"
+
 const dbConnection = async () => {
     try {
-        await mongoose.connect(process.env.DB_URL)
+        await mongoose.connect(url)
         .then((db)=>{
             console.log("db connected...")
         }).catch((err)=>{

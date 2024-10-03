@@ -1,7 +1,7 @@
 import JWT from "jsonwebtoken";
 
 const genrateJwtToken = (userId, res) => {
-    const token = JWT.sign({ userId }, process.env.SECRET_KEY, {
+    const token = JWT.sign({ userId }, "anasChatApplicationSecretKey", {
         expiresIn: "15d"
     });
 
