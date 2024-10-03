@@ -20,7 +20,7 @@ const Login = () => {
     }
 
     try {
-      const url = "http://localhost:4000/api/auth/login";
+      const url = "https://chatstom.onrender.com/api/auth/login";
       const response = await axios.post(url, input);
       console.log(response.data);
       toast.success(response.data.message);

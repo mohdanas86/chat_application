@@ -23,7 +23,7 @@ const MessageInput = () => {
     }
 
     try {
-      const url = `http://localhost:4000/api/message/send/${currentId}`;
+      const url = `https://chatstom.onrender.com/api/message/send/${currentId}`;
       await axios.post(url, { message }, { withCredentials: true });
 
       setMessage(""); // Clear the message input
