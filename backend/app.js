@@ -17,7 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const web = {
-    origin: 'http://localhost:3000',
+  origin:"https://chatstom.onrender.com",
     credentials: true
 }
 app.use(cors(web))
