@@ -1,34 +1,53 @@
-import React, { useState } from "react";
+import React from "react";
 import Conversation from "./Conversation";
 import Search from "./Search";
 import { useAuthcontext } from "../context/auth.context";
-import ChatNav from "./ChatNav";
+import Header from "./Header";
+import PhoneFooterNav from "./PhoneFooterNav";
 
 const ChatSideBar = () => {
-  const { conversation, mobileChat } = useAuthcontext();
-  return (
-    <>
-      <div
-        className={`sidebar  px-6 
-          ${mobileChat ? "hidden lg:block" : "block"} 
-        lg:block bg-white shadow-lg shadow-[#cfdbf7] lg:rounded-xl py-4 lg:border overflow-hidden`}
-      >
-        <div className="sidebarItmes flex justify-center items-center flex-col gap-4 ">
-          {/* SEARCHBAR */}
-          <Search />
+  const { mobileChat, showSearch, setShowSearch } = useAuthcontext();
 
-        {/* CHATS */}
-        <div className="peopleChat flex justify-center items-start flex-col w-full  gap-2">
-            <h4 className="font-semibold text-slate-700">People</h4>
-            <div className="conversationScrollCon flex justify-start items-start flex-col w-full gap-2">
-              <div className="peopleChatItems gap-4 overflow-scroll w-full">
-                <Conversation />
-              </div>
-            </div>
+  return (
+    <div
+      className={`sidebar px-6 relative h-screen lg:h-auto
+        ${mobileChat ? "hidden lg:block" : "block"}
+        lg:block bg-white shadow-lg shadow-[#cfdbf7] lg:rounded-xl py-4 lg:border`}
+    >
+      {/* HEADER */}
+      <Header />
+
+      {/* Main Sidebar Content */}
+      <div className="flex flex-col justify-between h-full">
+        <div className="flex flex-col justify-start items-center h-[85%] lg:h-[100%] w-full mt-[14%] lg:mt-0">
+
+          {/* Search Bar + Conversations */}
+          <div className=" hidden lg:block w-full">
+          <Search />
+          </div>
+
+          <div
+            className={`${
+              showSearch ? "block" : "hidden"
+            } lg:hidden absolute left-0 top-[-0px] w-full z-50 bg-white border-b p-4`}
+          >
+            <Search />
+          </div>
+
+          {/* Chat list - scrollable */}
+          <div className="scrollBarNo flex-grow w-full mt-4">
+            {/* <div className="w-full"> */}
+            <Conversation />
+            {/* </div> */}
           </div>
         </div>
+
+        {/* Footer */}
+        <div className="h-[0%]">
+          <PhoneFooterNav />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
