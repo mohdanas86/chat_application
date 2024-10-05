@@ -3,8 +3,10 @@ import axios from "axios";
 import GenderCheckBox from "../components/GenderCheckBox";
 import toast from "react-hot-toast";
 import { useAuthcontext } from "../context/auth.context";
+import Loding from "../components/Loding";
 
 const Register = () => {
+  const [load, setLoad] = useState(false);
   const { setAuthUser } = useAuthcontext();
 
   const [input, setInput] = useState({
@@ -32,8 +34,11 @@ const Register = () => {
       return; // Exit the function if the fields are not filled out
     }
 
+setLoad(true)
+
     try {
       const url = "https://chatstom.onrender.com/api/auth/signup";
+      // const url = "http://localhost:4000/api/auth/signup";
       const response = await axios.post(url, input);
 
       setAuthUser(response.data.userdata);
@@ -46,10 +51,13 @@ const Register = () => {
       // Handle errors and display a user-friendly message
       toast.error(err);
       console.log(err);
+    }finally{
+      setLoad(false)
     }
   };
 
   return (
+    <>
     <div className="register w-full" id="register">
       <div className="w-full lg:w-[80%] mx-auto flex justify-center items-center px-4 py-6">
         <form
@@ -144,6 +152,9 @@ const Register = () => {
         </form>
       </div>
     </div>
+
+    {load && <Loding />}
+    </>
   );
 };
 

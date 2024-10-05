@@ -9,7 +9,7 @@ import { useAuthcontext } from "../context/auth.context";
 const Home = () => {
   const { mobileChat, setMobileChat } = useAuthcontext();
   return (
-    <div className="container w-full h-screen lg:gap-6 lg:p-8 bg-[#EFF6FC]">
+    <div className="container w-full h-screen lg:gap-6 lg:p-8">
       <SidebarMenu />
       <ChatSideBar />
       <Chat />

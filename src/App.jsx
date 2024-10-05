@@ -9,7 +9,7 @@ const App = () => {
   const { authUser } = useAuthcontext();
 
   return (
-    <div className="flex justify-center items-center w-full">
+    <div className="flex justify-center items-center w-full bg-[#EFF6FC]">
       <Routes>
         <Route path="/" element={authUser ? <Home /> : <Navigate to="/login" />} />
         <Route

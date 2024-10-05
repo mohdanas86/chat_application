@@ -17,7 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 const web = {
-    origin: "https://chatstom.onrender.com",
+    origin: 'http://localhost:3000',
     credentials: true
 }
 app.use(cors(web))
@@ -41,8 +41,8 @@ app.use("/api/users", userRouter);
 
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "/dist")))
-app.get("*", (req, res)=>{
-res.sendFile(path.join(__dirname, "dist", "index.html"))
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html"))
 })
 
 // Create and start the server
